@@ -4,7 +4,7 @@
 #' @export
 
 impGenotypeMatrix <- function(genotype_matrix){
-
+	library(softImpute)
 	fits <- softImpute(genotype_matrix, trace=TRUE, type="svd")
 	gt_imputed <- complete(genotype_matrix, fits)
 
@@ -14,4 +14,3 @@ impGenotypeMatrix <- function(genotype_matrix){
 
 	return(gt_imputed)
 }
-
