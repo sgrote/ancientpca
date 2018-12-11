@@ -2,8 +2,8 @@
 #'
 #' Load vcf file into R and extract a genotype matrix coded with 0,1,2
 #' @param vcf_file
-#' @param max_missing_snp Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100%)
-#' @param max_missing_sample Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100%)
+#' @param max_missing_snp Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100 percent)
+#' @param max_missing_sample Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100 percent)
 #' @return matrix (sample x snp) coded 0,1,2, or NA
 #' @export
 
