@@ -15,3 +15,4 @@ Import:
   ggplot2
   ggrepel
   cowplot
+RoxygenNote: 6.1.0.9000
