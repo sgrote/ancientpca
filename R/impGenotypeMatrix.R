@@ -5,13 +5,11 @@
 #' @export
 
 impGenotypeMatrix <- function(genotype_matrix){
+
 	library(softImpute)
 	fits <- softImpute(genotype_matrix, trace=TRUE, type="svd")
 	gt_imputed <- complete(genotype_matrix, fits)
 
-	# remove non-variance columns
-	# only needed if snps or samples were removed
-	gt_imputed <- gt_imputed[ , apply(gt_imputed, 2, var) != 0]
 
 	return(gt_imputed)
 }

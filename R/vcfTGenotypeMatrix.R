@@ -1,6 +1,6 @@
 #' VCF file to genotype matrix
 #'
-#' Load vcf file into R and extract a genotype matrix (sample X SNP) coded with 0,1,2
+#' Load vcf file into R and extract a genotype matrix (sample X SNP) coded with 0,1,2. If samples or SNPs are removed due to too high missingness, non-variance columns are automatically removed.
 #' @param vcf_file VCF file with genotypes only (i.e. 0/0, 0/1, etc.). Missing values can be coded as "." or "./."
 #' @param max_missing_snp Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100 percent)
 #' @param max_missing_sample Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100 percent)
@@ -9,6 +9,7 @@
 
 vcfToGenotypeMatrix <- function(vcf_file, max_missing_snp=1, max_missing_sample=1){
 	library(vcfR)
+	removed = FALSE
 	vcf <- read.vcfR( vcf_file )
 	head(vcf)
 
@@ -25,17 +26,25 @@ vcfToGenotypeMatrix <- function(vcf_file, max_missing_snp=1, max_missing_sample=
 
 	# remove samples (rows), that have a greater that the set max. missingness
 	if (max_missing_sample < 1){
+		removed = TRUE
 		print("Removing individuals:")
 		print(rownames(as.data.frame(which(rowMeans(is.na(gt))  > max_missing_sample))))
 		gt <- gt[-which(rowMeans(is.na(gt)) >= max_missing_sample), ]
 	}
 	# remove snps (columns), that have a greater that the set max. missingness
 	if (max_missing_snp < 1){
+		removed = TRUE
 		gt <- gt[, -which(colMeans(is.na(gt)) >= max_missing_snp)]
+	}
+
+	# remove non-variance columns - only needed if snps or samples were removed
+	if (removed == TRUE){
+		removed = TRUE
+			gt <- gt[ , apply(gt, 2, var) != 0]
 	}
 
 	print("Genotype Matrix dimensions:")
 	print(paste0(dim(gt)[1], " samples x ", dim(gt)[2], " SNPs"))
-	
+
 	return(gt)
 }
