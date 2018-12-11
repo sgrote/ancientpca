@@ -8,9 +8,11 @@ vcfToGenotypeMatrix(vcf_file, max_missing_snp = 1,
   max_missing_sample = 1)
 }
 \arguments{
-\item{max_missing_snp}{Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100%)}
+\item{vcf_file}{VCF file with genotypes only (i.e. 0/0, 0/1, etc.). Missing values can be coded as "." or "./."}
 
-\item{max_missing_sample}{Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100%)}
+\item{max_missing_snp}{Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100 percent)}
+
+\item{max_missing_sample}{Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100 percent)}
 }
 \value{
 matrix (sample x snp) coded 0,1,2, or NA
