@@ -1,13 +1,17 @@
 #' Plot PCAs 1-6
 #'
 #' Exports plots of PCs 1~2, 3~4, 5~6 to PDF file
+#' @param pca_obj PCA object from R funtion prcomp()
+#' @param imputed_matrix Imputed genotype matrix with continuous genotype "probabilities"
+#' @param original_matrix Original genotype matrix coded 0,1,2, or <NA>
 #' @param max_missing_snp Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100 percent)
 #' @param max_missing_sample Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100 percent)
-#' @param meta_file CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well
+#' @param meta_file CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well.
+#' @param output_pca_filename Output file with ".pdf" 
 #' @export
 
 
-plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp=1, max_missing_sample=1, meta_file, output_pca_filename){
+plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp=1, max_missing_sample=1, meta_file, output_pca_pdf){
 	library(ggplot2)
 	library(ggrepel)
 	library(cowplot)
