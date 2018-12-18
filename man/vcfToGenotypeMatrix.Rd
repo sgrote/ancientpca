@@ -18,5 +18,5 @@ vcfToGenotypeMatrix(vcf_file, max_missing_snp = 1,
 matrix (sample x snp) coded 0,1,2, or NA
 }
 \description{
-Load vcf file into R and extract a genotype matrix (sample X SNP) coded with 0,1,2. If samples or SNPs are removed due to too high missingness, non-variance columns are automatically removed.
+Load vcf file into R and extract a genotype matrix (sample X SNP) coded with 0,1,2,<NA>.
 }

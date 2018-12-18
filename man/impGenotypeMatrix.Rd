@@ -7,8 +7,11 @@
 impGenotypeMatrix(genotype_matrix)
 }
 \arguments{
-\item{genotype_matrix}{Genotype matrix (sample x snps) coded with 0,1,2, or NA}
+\item{genotype_matrix}{Genotype matrix (sample x snps) coded with 0,1,2, or <NA>}
+}
+\value{
+matrix (sample x snp) with genotype "probabilities" ranging from 0 to 2
 }
 \description{
-Returns a matrix with imputed missing data in a 0,1,2 coded genotype matrix
+Returns a matrix with imputed missing data in a 0,1,2 coded genotype matrix. Non-variance columns are automatically removed.
 }
