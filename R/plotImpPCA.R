@@ -3,19 +3,14 @@
 #' Exports plots of PCs 1~2, 3~4, 5~6 to PDF file
 #' @param max_missing_snp Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100 percent)
 #' @param max_missing_sample Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100 percent)
-#' @param meta_file CVS file that contains headers "Sample_ID" and "Population". Can contain other
+#' @param meta_file CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well
 #' @export
 
 
-plotImpPCA <- function(pca_gt, gt_imputed, gt, max_missing_snp=1, max_missing_sample=1, meta_file, output_pca_filename){
+plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp=1, max_missing_sample=1, meta_file, output_pca_filename){
 	library(ggplot2)
 	library(ggrepel)
 	library(cowplot)
-
-
-	# calculate pca
-	pca_gt <- prcomp(gt_imputed, center = TRUE, scale. = TRUE)
-
 
 	# add meta data
 
