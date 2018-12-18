@@ -1,4 +1,4 @@
-#' Imputed missing genotypes in incomplete genotype matrix
+#' Impute missing genotypes in incomplete genotype matrix
 #'
 #' Returns a matrix with imputed missing data in a 0,1,2 coded genotype matrix. Non-variance columns are automatically removed.
 #' @param genotype_matrix Genotype matrix (sample x snps) coded with 0,1,2, or <NA>
