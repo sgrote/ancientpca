@@ -11,6 +11,12 @@ plotImpPCA <- function(pca_gt, gt_imputed, gt, max_missing_snp=1, max_missing_sa
 	library(ggplot2)
 	library(ggrepel)
 	library(cowplot)
+
+
+	# calculate pca
+	pca_gt <- prcomp(gt_imputed, center = TRUE, scale. = TRUE)
+
+
 	# add meta data
 
 	meta <- read.table(meta_file, sep = ",", header=TRUE)
