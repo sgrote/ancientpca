@@ -14,6 +14,6 @@ impGenotypeMatrix <- function(genotype_matrix){
 	# remove non-variance columns - only needed if snps or samples were removed
 	gt_imputed <- gt_imputed[ , (apply(gt_imputed, 2, var) != 0)]
 
-	
+
 	return(gt_imputed)
 }
