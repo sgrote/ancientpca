@@ -2,7 +2,7 @@
 % Please edit documentation in R/impGenotypeMatrix.R
 \name{impGenotypeMatrix}
 \alias{impGenotypeMatrix}
-\title{Imputed missing genotypes in incomplete genotype matrix}
+\title{Impute missing genotypes in incomplete genotype matrix}
 \usage{
 impGenotypeMatrix(genotype_matrix)
 }
