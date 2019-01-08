@@ -3,3 +3,4 @@
 export(impGenotypeMatrix)
 export(plotImpPCA)
 export(vcfToGenotypeMatrix)
+import(ggplot2)

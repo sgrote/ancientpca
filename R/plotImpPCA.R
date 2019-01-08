@@ -8,13 +8,11 @@
 #' @param max_missing_sample Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100 percent)
 #' @param meta_file CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well.
 #' @param output_pca_pdf Output file with ".pdf"
+#' @import ggplot2
 #' @export
 
 
 plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp=1, max_missing_sample=1, meta_file, output_pca_pdf){
-	library(ggplot2)
-	library(ggrepel)
-	library(cowplot)
 
 	# add meta data
 
@@ -49,7 +47,7 @@ plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp
 	plot1.0 <- ggplot(tab, aes(EV1, EV2,
                          color= tab$population,
                          label = tab$sample.id, size=tab$density, group=tab$sample.id)) +
-    	geom_label_repel(aes(EV1, EV2, label = tab$sample.id)) +
+    	ggrepel::geom_label_repel(aes(EV1, EV2, label = tab$sample.id)) +
     	scale_shape_manual(values=1:8) +
     	geom_point(size=1, stroke = 2) +
     	xlab(paste("PC 1 (", round(pc.percent, 2)[1], "%)", sep = "")) +
@@ -69,7 +67,7 @@ plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp
 	plot2 <- ggplot(tab, aes(EV3, EV4,
                          color= tab$population,
                          label = tab$sample.id, size=tab$density)) +
-    	geom_label_repel(aes(EV3, EV4, label = tab$sample.id)) +
+    	ggrepel::geom_label_repel(aes(EV3, EV4, label = tab$sample.id)) +
     	scale_shape_manual(values=1:8) +
     	geom_point(size=1, stroke = 2) +
     	xlab(paste("PC 3 (", round(pc.percent, 2)[3], "%)", sep = "")) +
@@ -85,7 +83,7 @@ plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp
 	plot3 <- ggplot(tab, aes(EV5, EV6,
                          color= tab$population,
                          label = tab$sample.id, size=tab$density)) +
-    	geom_label_repel(aes(EV5, EV6, label = tab$sample.id)) +
+    	ggrepel::geom_label_repel(aes(EV5, EV6, label = tab$sample.id)) +
     	scale_shape_manual(values=1:8) +
     	geom_point(size=1, stroke = 2) +
     	xlab(paste("PC 5 (", round(pc.percent, 2)[5], "%)", sep = "")) +
@@ -97,17 +95,17 @@ plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp
     	theme(legend.position = "none")
 
 	# legend
-	legend <- get_legend(plot1.0)
+	legend <- cowplot::get_legend(plot1.0)
 
 	# combine plots
-	p <- plot_grid(plot1, plot2, plot3, legend, labels = c("A", "B", "C"))
+	p <- cowplot::plot_grid(plot1, plot2, plot3, legend, labels = c("A", "B", "C"))
 
 	# now add the title
 	title_string = paste0("max. ", toString(max_missing_snp*100), "% missingness per SNP and max. ", toString(max_missing_sample*100), "% missingness per sample")
-	title <- ggdraw() + draw_label(title_string, fontface = 'bold')
+	title <- cowplot::ggdraw() + cowplot::draw_label(title_string, fontface = 'bold')
 
-	p2 <- plot_grid(title, p, ncol = 1, rel_heights = c(0.04, 1)) # rel_heights values control title margins
+	p2 <- cowplot::plot_grid(title, p, ncol = 1, rel_heights = c(0.04, 1)) # rel_heights values control title margins
 
 	# save plots to one PDF using "cowplot"
-	save_plot(output_pca_pdf, p2, ncol = 3, nrow=3)
+	cowplot::save_plot(output_pca_pdf, p2, ncol = 3, nrow=3)
 }

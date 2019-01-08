@@ -8,13 +8,12 @@
 #' @export
 
 vcfToGenotypeMatrix <- function(vcf_file, max_missing_snp=1, max_missing_sample=1){
-	library(vcfR)
 
-	vcf <- read.vcfR( vcf_file )
+	vcf <- vcfR::read.vcfR( vcf_file )
 	head(vcf)
 
 	# extract genotype matrix
-	gt <- extract.gt(vcf)
+	gt <- vcfR::extract.gt(vcf)
 
 	#recode 0,1,2
 	gt[gt == "0/0"] <- 0

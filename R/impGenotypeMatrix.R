@@ -7,9 +7,8 @@
 
 impGenotypeMatrix <- function(genotype_matrix){
 
-	library(softImpute)
-	fits <- softImpute(genotype_matrix, trace=TRUE, type="svd")
-	gt_imputed <- complete(genotype_matrix, fits)
+	fits <- softImpute::softImpute(genotype_matrix, trace=TRUE, type="svd")
+	gt_imputed <- softImpute::complete(genotype_matrix, fits)
 
 
 	# remove non-variance columns - only needed if snps or samples were removed
