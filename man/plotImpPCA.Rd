@@ -20,7 +20,7 @@ plotImpPCA(pca_obj, imputed_matrix, original_matrix, max_missing_snp = 1,
 
 \item{meta_file}{CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well.}
 
-\item{output_pca_filename}{Output file with ".pdf"}
+\item{output_pca_pdf}{Output file with ".pdf"}
 }
 \description{
 Exports plots of PCs 1~2, 3~4, 5~6 to PDF file
