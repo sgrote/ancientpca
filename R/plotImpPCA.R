@@ -7,7 +7,7 @@
 #' @param max_missing_snp Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100 percent)
 #' @param max_missing_sample Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100 percent)
 #' @param meta_file CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well.
-#' @param output_pca_filename Output file with ".pdf" 
+#' @param output_pca_pdf Output file with ".pdf"
 #' @export
 
 
@@ -109,5 +109,5 @@ plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp
 	p2 <- plot_grid(title, p, ncol = 1, rel_heights = c(0.04, 1)) # rel_heights values control title margins
 
 	# save plots to one PDF using "cowplot"
-	save_plot(output_pca_filename, p2, ncol = 3, nrow=3)
+	save_plot(output_pca_pdf, p2, ncol = 3, nrow=3)
 }
