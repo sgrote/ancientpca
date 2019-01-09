@@ -6,24 +6,11 @@ A Probabilistic Approach to Conducting PCA with Sparse Genotype Data from Ancien
 
 ## Installation
 
-### Install dependencies
-
 ```
-install.packages('devtools')
-install.packages('vcfR')
-install.packages('softImpute')
-install.packages('ggplot2')
-install.packages('ggrepel')
-install.packages('cowplot')
+if (!requireNamespace("devtools", quietly=TRUE))
+    install.packages("devtools")
+devtools::install_github('sgrote/ancientpca')
 ```
-
-### Install *ancientpca*
-
-```
-library(devtools)
-install_github('sgrote/ancientpca')
-```
-
 
 ## Input data
 
