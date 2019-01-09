@@ -1,24 +1,29 @@
+This is a fork of [sojwolf/ancientpca](https://github.com/sojwolf/ancientpca), with a bugfix for the plotting function, and some minor modifications.
+
 # ancientpca
+
 A Probabilistic Approach to Conducting PCA with Sparse Genotype Data from Ancient Samples
 
-## Install and load in R
+## Installation
+
+### Install dependencies
+
+```
+install.packages('devtools')
+install.packages('vcfR')
+install.packages('softImpute')
+install.packages('ggplot2')
+install.packages('ggrepel')
+install.packages('cowplot')
+```
+
+### Install *ancientpca*
 
 ```
 library(devtools)
-install_github('sojwolf/ancientpca')
-library(ancientpca)
+install_github('sgrote/ancientpca')
 ```
 
-## Dependencies
-
-R packages you need installed:
-```
-library(vcfR)
-library(softImpute)
-library(ggplot2)
-library(ggrepel)
-library(cowplot)
-```
 
 ## Input data
 
@@ -27,6 +32,10 @@ library(cowplot)
 
 
 ## Example workflow
+
+```
+library(ancientpca)
+```
 
 1. **Load vcf-file** into R and subsample, if need be by setting the maximum allowed missingness per sample and SNP. The default is set to 1, i.e. 100%. The vcf-file can be zipped.
 
