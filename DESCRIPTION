@@ -4,11 +4,11 @@ Title: A Probabilistic Approach to Conducting PCA with Sparse Genotype Data from
 Version: 0.1.1
 Author: Sophie Wolf, Steffi Grote
 Maintainer: Sophie Wolf <sophie_wolf@eva.mpg.de>, Steffi Grote <steffi_grote@eva.mpg.de>
-Description: Make informative PCA plots using the low coverage ancient genomes as direct input
+Description: Make informative PCA plots using VCFs with the low coverage ancient genomes as direct input.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-Import:
+Imports:
   vcfR
   softImpute
   ggplot2
