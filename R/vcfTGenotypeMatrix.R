@@ -37,6 +37,9 @@ vcfToGenotypeMatrix <- function(vcf_file, max_missing_snp=1, max_missing_sample=
 
 	print("Genotype Matrix dimensions:")
 	print(paste0(dim(gt)[1], " samples x ", dim(gt)[2], " SNPs"))
-
+	
+	attr(gt, "max_missing_snp") <- max_missing_snp
+	attr(gt, "max_missing_sample") <- max_missing_sample
+	
 	return(gt)
 }

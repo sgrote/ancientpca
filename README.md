@@ -45,6 +45,6 @@ pca_gt <- prcomp(gt_imputed, center = TRUE, scale. = TRUE)
 4. **Plot** PCs 1-6 and save output to PDF file.
 
 ```
-plotImpPCA(pca_obj=pca_gt, imputed_matrix=gt_imputed, original_matrix=gt, max_missing_snp=0.9, 
-    max_missing_sample=0.95,  meta_file = "meta.csv", output_pca_pdf = "output.pdf")
+plotImpPCA(pca_obj=pca_gt, imputed_matrix=gt_imputed, original_matrix=gt, 
+    meta_file="meta.csv", output_pca_pdf="output.pdf")
 ```

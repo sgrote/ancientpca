@@ -4,8 +4,8 @@
 \alias{plotImpPCA}
 \title{Plot PCAs 1-6}
 \usage{
-plotImpPCA(pca_obj, imputed_matrix, original_matrix, max_missing_snp = 1,
-  max_missing_sample = 1, meta_file, output_pca_pdf)
+plotImpPCA(pca_obj, imputed_matrix, original_matrix, meta_file,
+  output_pca_pdf)
 }
 \arguments{
 \item{pca_obj}{PCA object from R funtion prcomp()}
@@ -13,10 +13,6 @@ plotImpPCA(pca_obj, imputed_matrix, original_matrix, max_missing_snp = 1,
 \item{imputed_matrix}{Imputed genotype matrix with continuous genotype "probabilities"}
 
 \item{original_matrix}{Original genotype matrix coded 0,1,2, or <NA>}
-
-\item{max_missing_snp}{Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100 percent)}
-
-\item{max_missing_sample}{Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100 percent)}
 
 \item{meta_file}{CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well.}
 

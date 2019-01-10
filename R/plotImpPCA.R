@@ -4,8 +4,6 @@
 #' @param pca_obj PCA object from R funtion prcomp()
 #' @param imputed_matrix Imputed genotype matrix with continuous genotype "probabilities"
 #' @param original_matrix Original genotype matrix coded 0,1,2, or <NA>
-#' @param max_missing_snp Set a max. percentage of missingness per SNP allowed. Default is set to 1 (i.e. 100 percent)
-#' @param max_missing_sample Set a max. percentage of missingness per sample allowed.  Default is set to 1 (i.e. 100 percent)
 #' @param meta_file CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well.
 #' @param output_pca_pdf Output file with ".pdf"
 #' @import ggplot2
@@ -13,7 +11,7 @@
 #' @export
 
 
-plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp=1, max_missing_sample=1, meta_file, output_pca_pdf){
+plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, meta_file, output_pca_pdf){
 
 	# add meta data
 	meta <- read.table(meta_file, sep = ",", header=TRUE)
@@ -101,7 +99,7 @@ plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp
 	p <- cowplot::plot_grid(plot1, plot2, plot3, legend, labels = c("A", "B", "C"))
 
 	# now add the title
-	title_string = paste0("max. ", toString(max_missing_snp*100), "% missingness per SNP and max. ", toString(max_missing_sample*100), "% missingness per sample")
+	title_string = paste0("max. ", attr(original_matrix, "max_missing_snp")*100, "% missingness per SNP and max. ", attr(original_matrix, "max_missing_sample")*100, "% missingness per sample")
 	title <- cowplot::ggdraw() + cowplot::draw_label(title_string, fontface = 'bold')
 
 	p2 <- cowplot::plot_grid(title, p, ncol = 1, rel_heights = c(0.04, 1)) # rel_heights values control title margins
