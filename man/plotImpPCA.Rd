@@ -4,17 +4,14 @@
 \alias{plotImpPCA}
 \title{Plot PCAs 1-6}
 \usage{
-plotImpPCA(pca_obj, imputed_matrix, original_matrix, meta_file,
-  output_pca_pdf)
+plotImpPCA(pca_obj, original_matrix, meta_file, output_pca_pdf)
 }
 \arguments{
 \item{pca_obj}{PCA object from R funtion prcomp()}
 
-\item{imputed_matrix}{Imputed genotype matrix with continuous genotype "probabilities"}
-
 \item{original_matrix}{Original genotype matrix coded 0,1,2, or <NA>}
 
-\item{meta_file}{CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well.}
+\item{meta_file}{CSV file with two columns: sample-ID and population. Might contain additional columns.}
 
 \item{output_pca_pdf}{Output file with ".pdf"}
 }

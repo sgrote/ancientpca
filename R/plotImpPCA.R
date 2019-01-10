@@ -2,7 +2,6 @@
 #'
 #' Exports plots of PCs 1~2, 3~4, 5~6 to PDF file
 #' @param pca_obj PCA object from R funtion prcomp()
-#' @param imputed_matrix Imputed genotype matrix with continuous genotype "probabilities"
 #' @param original_matrix Original genotype matrix coded 0,1,2, or <NA>
 #' @param meta_file CSV file with two columns: sample-ID and population. Might contain additional columns.
 #' @param output_pca_pdf Output file with ".pdf"
@@ -11,12 +10,18 @@
 #' @export
 
 
-plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, meta_file, output_pca_pdf){
+plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
+    
+	# extract rotated loadings
+	loads <- pca_obj$x
 
 	# add meta data
 	meta <- read.table(meta_file, sep = ",", header=TRUE)
-	meta_subset <- meta[meta[,1] %in% rownames(imputed_matrix), ]
-
+	miss_meta <- rownames(loads)[!(rownames(loads) %in% meta[,1])]
+	if (length(miss_meta) > 0){
+	    stop("missing metadata for samples: ", paste(miss_meta, collapse=", "))
+	}
+	meta_subset <- meta[match(rownames(loads), meta[,1]), ]
 
 	#get missing stats on samples in original data
 	density <- character(0)
@@ -26,12 +31,12 @@ plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, meta_file, outp
 	tab <- data.frame(sample.id = meta_subset[,1],
     	population = meta_subset[,2],
     	density = density,
-    	EV1 = pca_obj$x[,1],    # the first eigenvector
-    	EV2 = pca_obj$x[,2],
-    	EV3 = pca_obj$x[,3],
-    	EV4 = pca_obj$x[,4],
-    	EV5 = pca_obj$x[,5],
-    	EV6 = pca_obj$x[,6],
+    	EV1 = loads[,1],    # the first eigenvector
+    	EV2 = loads[,2],
+    	EV3 = loads[,3],
+    	EV4 = loads[,4],
+    	EV5 = loads[,5],
+    	EV6 = loads[,6],
     	stringsAsFactors = FALSE)
 	head(tab)
 
