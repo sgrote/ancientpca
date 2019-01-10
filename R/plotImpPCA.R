@@ -9,36 +9,36 @@
 #' @param meta_file CVS file that contains headers "Sample_ID" and "Population". Can contain other columns as well.
 #' @param output_pca_pdf Output file with ".pdf"
 #' @import ggplot2
+#' @import utils
 #' @export
 
 
 plotImpPCA <- function(pca_obj, imputed_matrix, original_matrix, max_missing_snp=1, max_missing_sample=1, meta_file, output_pca_pdf){
 
 	# add meta data
-
 	meta <- read.table(meta_file, sep = ",", header=TRUE)
-	meta_subset <- meta[meta$Sample_ID %in% rownames(gt_imputed), ]
+	meta_subset <- meta[meta$Sample_ID %in% rownames(imputed_matrix), ]
 
 
 	#get missing stats on samples in original data
 	density <- character(0)
-	for (i in 1:length(meta_subset$Sample_ID)) density[i] <- round(1 -(sum(is.na(gt[i,]))/dim(gt)[2]), 1)
+	for (i in 1:length(meta_subset$Sample_ID)) density[i] <- round(1 -(sum(is.na(original_matrix[i,]))/dim(original_matrix)[2]), 1)
 
 	# make a data.frame with individuals and PC1 and PC2
 	tab <- data.frame(sample.id = meta_subset$Sample_ID,
     	population = meta_subset$Population,
     	density = density,
-    	EV1 = pca_gt$x[,1],    # the first eigenvector
-    	EV2 = pca_gt$x[,2],
-    	EV3 = pca_gt$x[,3],
-    	EV4 = pca_gt$x[,4],
-    	EV5 = pca_gt$x[,5],
-    	EV6 = pca_gt$x[,6],
+    	EV1 = pca_obj$x[,1],    # the first eigenvector
+    	EV2 = pca_obj$x[,2],
+    	EV3 = pca_obj$x[,3],
+    	EV4 = pca_obj$x[,4],
+    	EV5 = pca_obj$x[,5],
+    	EV6 = pca_obj$x[,6],
     	stringsAsFactors = FALSE)
 	head(tab)
 
 
-	pc.percent <- pca_gt$sdev^2/sum(pca_gt$sdev^2)*100
+	pc.percent <- pca_obj$sdev^2/sum(pca_obj$sdev^2)*100
 
 
 	# Draw
