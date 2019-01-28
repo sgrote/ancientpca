@@ -45,12 +45,12 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
 
 
 	# Draw
-	# PC 1 and 2
+	# PC 1 and 2 EV
 
-	plot1.0 <- ggplot(tab, aes(EV1, EV2,
+	plot1.0 <- ggplot(tab, aes(tab$EV1, tab$EV2,
                          color= tab$population,
                          label = tab$sample.id, size=tab$density, group=tab$sample.id)) +
-    	ggrepel::geom_label_repel(aes(EV1, EV2, label = tab$sample.id)) +
+    	ggrepel::geom_label_repel(aes(tab$EV1, tab$EV2, label = tab$sample.id)) +
     	scale_shape_manual(values=1:8) +
     	geom_point(size=1, stroke = 2) +
     	xlab(paste("PC 1 (", round(pc.percent, 2)[1], "%)", sep = "")) +
@@ -67,10 +67,10 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
 
 
 	# PC 3 and 4
-	plot2 <- ggplot(tab, aes(EV3, EV4,
+	plot2 <- ggplot(tab, aes(tab$EV3, tab$EV4,
                          color= tab$population,
                          label = tab$sample.id, size=tab$density)) +
-    	ggrepel::geom_label_repel(aes(EV3, EV4, label = tab$sample.id)) +
+    	ggrepel::geom_label_repel(aes(tab$EV3, tab$EV4, label = tab$sample.id)) +
     	scale_shape_manual(values=1:8) +
     	geom_point(size=1, stroke = 2) +
     	xlab(paste("PC 3 (", round(pc.percent, 2)[3], "%)", sep = "")) +
@@ -83,10 +83,10 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
 
 
 	# PC 4 and 5
-	plot3 <- ggplot(tab, aes(EV5, EV6,
+	plot3 <- ggplot(tab, aes(tab$EV5, tab$EV6,
                          color= tab$population,
                          label = tab$sample.id, size=tab$density)) +
-    	ggrepel::geom_label_repel(aes(EV5, EV6, label = tab$sample.id)) +
+    	ggrepel::geom_label_repel(aes(tab$EV5, tab$EV6, label = tab$sample.id)) +
     	scale_shape_manual(values=1:8) +
     	geom_point(size=1, stroke = 2) +
     	xlab(paste("PC 5 (", round(pc.percent, 2)[5], "%)", sep = "")) +
