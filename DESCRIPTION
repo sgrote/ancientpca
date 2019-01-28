@@ -1,7 +1,7 @@
 Package: ancientpca
 Type: Package
 Title: A Probabilistic Approach to Conducting PCA with Sparse Genotype Data from Ancient Samples
-Version: 0.1.1
+Version: 0.1.2
 Author: Sophie Wolf, Steffi Grote
 Maintainer: Sophie Wolf <sophie_wolf@eva.mpg.de>, Steffi Grote <steffi_grote@eva.mpg.de>
 Description: Make informative PCA plots using VCFs with the low coverage ancient genomes as direct input.
