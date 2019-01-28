@@ -23,14 +23,13 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
 	}
 	meta_subset <- meta[match(rownames(loads), meta[,1]), ]
 
-	#get missing stats on samples in original data
-	density <- character(0)
-	for (i in 1:length(meta_subset[,1])) density[i] <- round(1 -(sum(is.na(original_matrix[i,]))/dim(original_matrix)[2]), 1)
+	# get missing stats on samples in original data (already filtered with max_miss*)
+	dens = 1 - (rowMeans(is.na(original_matrix)))
 
 	# make a data.frame with individuals and PC1 and PC2
 	tab <- data.frame(sample.id = meta_subset[,1],
     	population = meta_subset[,2],
-    	density = density,
+    	dens = dens,
     	EV1 = loads[,1],    # the first eigenvector
     	EV2 = loads[,2],
     	EV3 = loads[,3],
@@ -49,10 +48,10 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
 
 	plot1.0 <- ggplot(tab, aes(tab$EV1, tab$EV2,
                          color= tab$population,
-                         label = tab$sample.id, size=tab$density, group=tab$sample.id)) +
+                         label = tab$sample.id, size=tab$dens, group=tab$sample.id)) +
     	ggrepel::geom_label_repel(aes(tab$EV1, tab$EV2, label = tab$sample.id)) +
-    	scale_shape_manual(values=1:8) +
-    	geom_point(size=1, stroke = 2) +
+	scale_size_continuous(range=c(3,6)) +
+    	geom_point(size=1, stroke=2) +
     	xlab(paste("PC 1 (", round(pc.percent, 2)[1], "%)", sep = "")) +
     	ylab(paste("PC 2 (", round(pc.percent, 2)[2], "%)", sep = "")) +
     	theme_bw() +
@@ -60,7 +59,7 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
           panel.grid.minor = element_blank(),
           panel.background = element_rect(colour = "black", size=0.5)) +
     	theme(legend.box = "horizontal") +
-    	labs(col="population/site", size="density of data") +
+    	labs(col="population/site", size="density of data (SNPs covered)") +
     	theme(legend.text=element_text(size=13))
 
 	plot1 <- plot1.0 + theme(legend.position = "none")
@@ -69,9 +68,9 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
 	# PC 3 and 4
 	plot2 <- ggplot(tab, aes(tab$EV3, tab$EV4,
                          color= tab$population,
-                         label = tab$sample.id, size=tab$density)) +
+                         label = tab$sample.id, size=tab$dens)) +
     	ggrepel::geom_label_repel(aes(tab$EV3, tab$EV4, label = tab$sample.id)) +
-    	scale_shape_manual(values=1:8) +
+	scale_size_continuous(range=c(3,6)) +
     	geom_point(size=1, stroke = 2) +
     	xlab(paste("PC 3 (", round(pc.percent, 2)[3], "%)", sep = "")) +
     	ylab(paste("PC 4 (", round(pc.percent, 2)[4], "%)", sep = "")) +
@@ -85,9 +84,9 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
 	# PC 4 and 5
 	plot3 <- ggplot(tab, aes(tab$EV5, tab$EV6,
                          color= tab$population,
-                         label = tab$sample.id, size=tab$density)) +
+                         label = tab$sample.id, size=tab$dens)) +
     	ggrepel::geom_label_repel(aes(tab$EV5, tab$EV6, label = tab$sample.id)) +
-    	scale_shape_manual(values=1:8) +
+	scale_size_continuous(range=c(3,6)) +
     	geom_point(size=1, stroke = 2) +
     	xlab(paste("PC 5 (", round(pc.percent, 2)[5], "%)", sep = "")) +
     	ylab(paste("PC 6 (", round(pc.percent, 2)[6], "%)", sep = "")) +
