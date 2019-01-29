@@ -1,3 +1,33 @@
+
+
+#' Plot 1 PCA plot
+#' @param loads matrix of PC loads
+#' @param pca_x PC nr for x-axis
+#' @param pca_y PC nr for y-axis
+#' @param meta metadata for size and legend
+#' @param pc_percent proportion of variance explained for all PCs
+#' @return PCA plot
+
+pca_plot <- function(loads, pca_x, pca_y, meta, pc_percent){
+    plotty <- ggplot(mapping = aes(loads[,pca_x], loads[,pca_y], color=meta$population,
+	label=meta$sample_id, size=meta$dens, group=meta$sample_id)) +
+	ggrepel::geom_label_repel(aes(loads[,pca_x], loads[,pca_y], label=meta$sample_id)) +
+	scale_size_continuous(range=c(3,6)) +
+	geom_point(size=1, stroke=2) +
+	xlab(paste("PC ", pca_x, " (" , round(pc_percent[pca_x],2), "%)", sep = "")) +
+	ylab(paste("PC ", pca_y, " (", round(pc_percent[pca_y],2), "%)", sep = "")) +
+	theme_bw() +
+	theme(panel.grid.major = element_blank(),
+	    panel.grid.minor = element_blank(),
+	    panel.background = element_rect(colour = "black", size=0.5)) +
+	theme(legend.box = "horizontal") +
+	labs(col="population/site", size="density of data (SNPs covered)") +
+	theme(legend.text=element_text(size=13))
+    return(plotty)
+}
+
+
+
 #' Plot PCAs 1-6
 #'
 #' Exports plots of PCs 1~2, 3~4, 5~6 to PDF file
@@ -9,11 +39,11 @@
 #' @import utils
 #' @export
 
-
 plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
     
 	# extract rotated loadings
 	loads <- pca_obj$x
+	pc_percent <- pca_obj$sdev^2/sum(pca_obj$sdev^2)*100
 
 	# add meta data
 	meta <- read.table(meta_file, sep = ",", header=TRUE)
@@ -21,83 +51,23 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
 	if (length(miss_meta) > 0){
 	    stop("missing metadata for samples: ", paste(miss_meta, collapse=", "))
 	}
-	meta_subset <- meta[match(rownames(loads), meta[,1]), ]
+	meta <- meta[match(rownames(loads), meta[,1]), ]
 
 	# get missing stats on samples in original data (already filtered with max_miss*)
-	dens = 1 - (rowMeans(is.na(original_matrix)))
+	dens <- 1 - (rowMeans(is.na(original_matrix)))
 
-	# make a data.frame with individuals and PC1 and PC2
-	tab <- data.frame(sample.id = meta_subset[,1],
-    	population = meta_subset[,2],
-    	dens = dens,
-    	EV1 = loads[,1],    # the first eigenvector
-    	EV2 = loads[,2],
-    	EV3 = loads[,3],
-    	EV4 = loads[,4],
-    	EV5 = loads[,5],
-    	EV6 = loads[,6],
-    	stringsAsFactors = FALSE)
-	head(tab)
-
-
-	pc.percent <- pca_obj$sdev^2/sum(pca_obj$sdev^2)*100
-
-
-	# Draw
-	# PC 1 and 2 EV
-
-	plot1.0 <- ggplot(tab, aes(tab$EV1, tab$EV2,
-                         color= tab$population,
-                         label = tab$sample.id, size=tab$dens, group=tab$sample.id)) +
-    	ggrepel::geom_label_repel(aes(tab$EV1, tab$EV2, label = tab$sample.id)) +
-	scale_size_continuous(range=c(3,6)) +
-    	geom_point(size=1, stroke=2) +
-    	xlab(paste("PC 1 (", round(pc.percent, 2)[1], "%)", sep = "")) +
-    	ylab(paste("PC 2 (", round(pc.percent, 2)[2], "%)", sep = "")) +
-    	theme_bw() +
-    	theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          panel.background = element_rect(colour = "black", size=0.5)) +
-    	theme(legend.box = "horizontal") +
-    	labs(col="population/site", size="density of data (SNPs covered)") +
-    	theme(legend.text=element_text(size=13))
-
-	plot1 <- plot1.0 + theme(legend.position = "none")
-
-
-	# PC 3 and 4
-	plot2 <- ggplot(tab, aes(tab$EV3, tab$EV4,
-                         color= tab$population,
-                         label = tab$sample.id, size=tab$dens)) +
-    	ggrepel::geom_label_repel(aes(tab$EV3, tab$EV4, label = tab$sample.id)) +
-	scale_size_continuous(range=c(3,6)) +
-    	geom_point(size=1, stroke = 2) +
-    	xlab(paste("PC 3 (", round(pc.percent, 2)[3], "%)", sep = "")) +
-    	ylab(paste("PC 4 (", round(pc.percent, 2)[4], "%)", sep = "")) +
-    	theme_bw() +
-    	theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          panel.background = element_rect(colour = "black", size=0.5)) +
-    	theme(legend.position = "none")
-
-
-	# PC 4 and 5
-	plot3 <- ggplot(tab, aes(tab$EV5, tab$EV6,
-                         color= tab$population,
-                         label = tab$sample.id, size=tab$dens)) +
-    	ggrepel::geom_label_repel(aes(tab$EV5, tab$EV6, label = tab$sample.id)) +
-	scale_size_continuous(range=c(3,6)) +
-    	geom_point(size=1, stroke = 2) +
-    	xlab(paste("PC 5 (", round(pc.percent, 2)[5], "%)", sep = "")) +
-    	ylab(paste("PC 6 (", round(pc.percent, 2)[6], "%)", sep = "")) +
-    	theme_bw() +
-    	theme(panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          panel.background = element_rect(colour = "black", size=0.5)) +
-    	theme(legend.position = "none")
+	# make a data.frame with individuals and PCs
+	plot_meta <- data.frame(meta[,1], meta[,2], dens, stringsAsFactors=FALSE)
+	colnames(plot_meta) <- c("sample_id", "population", "dens")
+	
+	# PCA plots for different PCs
+	plot1 <- pca_plot(loads, 1, 2, plot_meta, pc_percent)
+	plot2 <- pca_plot(loads, 3, 4, plot_meta, pc_percent) + theme(legend.position = "none")
+	plot3 <- pca_plot(loads, 5, 6, plot_meta, pc_percent) + theme(legend.position = "none")
 
 	# legend
-	legend <- cowplot::get_legend(plot1.0)
+	legend <- cowplot::get_legend(plot1)
+	plot1 <- plot1 + theme(legend.position = "none")
 
 	# combine plots
 	p <- cowplot::plot_grid(plot1, plot2, plot3, legend, labels = c("A", "B", "C"))
