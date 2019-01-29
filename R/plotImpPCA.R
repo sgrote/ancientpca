@@ -74,13 +74,13 @@ plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
 
     # now add the title
     title_string = paste0("max. ", attr(original_matrix, "max_missing_snp")*100, "% missingness per SNP and max. ", attr(original_matrix, "max_missing_sample")*100, "% missingness per sample")
-    title <- cowplot::ggdraw() + cowplot::draw_label(title_string, fontface = 'bold')
+    title <- cowplot::ggdraw() + cowplot::draw_label(title_string, fontface='bold')
 
     # rel_heights values control title margins
     p2 <- cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.04,1)) 
 
     # save plots to one PDF using "cowplot"
-    cowplot::save_plot(output_pca_pdf, p2, ncol=3, nrow=3)
+    cowplot::save_plot(output_pca_pdf, p2, ncol=2, nrow=2, base_height=6)
     
     # cowplot in addition opens an empty plotting device
     dev.off()
