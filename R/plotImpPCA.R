@@ -41,43 +41,49 @@ pca_plot <- function(loads, pca_x, pca_y, meta, pc_percent){
 
 plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf){
     
-	# extract rotated loadings
-	loads <- pca_obj$x
-	pc_percent <- pca_obj$sdev^2/sum(pca_obj$sdev^2)*100
+    # extract rotated loadings
+    loads <- pca_obj$x
+    pc_percent <- pca_obj$sdev^2/sum(pca_obj$sdev^2)*100
 
-	# add meta data
-	meta <- read.table(meta_file, sep = ",", header=TRUE)
-	miss_meta <- rownames(loads)[!(rownames(loads) %in% meta[,1])]
-	if (length(miss_meta) > 0){
-	    stop("missing metadata for samples: ", paste(miss_meta, collapse=", "))
-	}
-	meta <- meta[match(rownames(loads), meta[,1]), ]
+    # add meta data
+    meta <- read.table(meta_file, sep = ",", header=TRUE)
+    miss_meta <- rownames(loads)[!(rownames(loads) %in% meta[,1])]
+    if (length(miss_meta) > 0){
+	stop("missing metadata for samples: ", paste(miss_meta, collapse=", "))
+    }
+    meta <- meta[match(rownames(loads), meta[,1]), ]
 
-	# get missing stats on samples in original data (already filtered with max_miss*)
-	dens <- 1 - (rowMeans(is.na(original_matrix)))
+    # get missing stats on samples in original data (already filtered with max_miss*)
+    dens <- 1 - (rowMeans(is.na(original_matrix)))
 
-	# make a data.frame with individuals and PCs
-	plot_meta <- data.frame(meta[,1], meta[,2], dens, stringsAsFactors=FALSE)
-	colnames(plot_meta) <- c("sample_id", "population", "dens")
-	
-	# PCA plots for different PCs
-	plot1 <- pca_plot(loads, 1, 2, plot_meta, pc_percent)
-	plot2 <- pca_plot(loads, 3, 4, plot_meta, pc_percent) + theme(legend.position = "none")
-	plot3 <- pca_plot(loads, 5, 6, plot_meta, pc_percent) + theme(legend.position = "none")
+    # make a data.frame with individuals and PCs
+    plot_meta <- data.frame(meta[,1], meta[,2], dens, stringsAsFactors=FALSE)
+    colnames(plot_meta) <- c("sample_id", "population", "dens")
+    
+    # PCA plots for different PCs
+    plot1 <- pca_plot(loads, 1, 2, plot_meta, pc_percent)
+    plot2 <- pca_plot(loads, 3, 4, plot_meta, pc_percent) + theme(legend.position = "none")
+    plot3 <- pca_plot(loads, 5, 6, plot_meta, pc_percent) + theme(legend.position = "none")
 
-	# legend
-	legend <- cowplot::get_legend(plot1)
-	plot1 <- plot1 + theme(legend.position = "none")
+    # legend
+    legend <- cowplot::get_legend(plot1)
+    plot1 <- plot1 + theme(legend.position = "none")
 
-	# combine plots
-	p <- cowplot::plot_grid(plot1, plot2, plot3, legend, labels = c("A", "B", "C"))
+    # combine plots
+    p <- cowplot::plot_grid(plot1, plot2, plot3, legend, labels = c("A", "B", "C"))
 
-	# now add the title
-	title_string = paste0("max. ", attr(original_matrix, "max_missing_snp")*100, "% missingness per SNP and max. ", attr(original_matrix, "max_missing_sample")*100, "% missingness per sample")
-	title <- cowplot::ggdraw() + cowplot::draw_label(title_string, fontface = 'bold')
+    # now add the title
+    title_string = paste0("max. ", attr(original_matrix, "max_missing_snp")*100, "% missingness per SNP and max. ", attr(original_matrix, "max_missing_sample")*100, "% missingness per sample")
+    title <- cowplot::ggdraw() + cowplot::draw_label(title_string, fontface = 'bold')
 
-	p2 <- cowplot::plot_grid(title, p, ncol = 1, rel_heights = c(0.04, 1)) # rel_heights values control title margins
+    # rel_heights values control title margins
+    p2 <- cowplot::plot_grid(title, p, ncol=1, rel_heights=c(0.04,1)) 
 
-	# save plots to one PDF using "cowplot"
-	cowplot::save_plot(output_pca_pdf, p2, ncol = 3, nrow=3)
+    # save plots to one PDF using "cowplot"
+    cowplot::save_plot(output_pca_pdf, p2, ncol=3, nrow=3)
+    
+    # cowplot in addition opens an empty plotting device
+    dev.off()
+    
+    return(invisible(NULL))
 }
