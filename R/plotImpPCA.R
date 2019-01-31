@@ -39,6 +39,7 @@ pca_plot <- function(loads, pc_x, pc_y, meta, pc_percent){
 #' @param pc_max Even integer, last PC to plot, e.g. if pc_max=4 it will plot PC1 vs PC2 and PC3 vs PC4.
 #' @import ggplot2
 #' @import utils
+#' @importFrom grDevices dev.off
 #' @export
 
 plotImpPCA <- function(pca_obj, original_matrix, meta_file, output_pca_pdf, pc_max=6){
