@@ -4,14 +4,14 @@
 \alias{pca_plot}
 \title{Plot 1 PCA plot}
 \usage{
-pca_plot(loads, pca_x, pca_y, meta, pc_percent)
+pca_plot(loads, pc_x, pc_y, meta, pc_percent)
 }
 \arguments{
 \item{loads}{matrix of PC loads}
 
-\item{pca_x}{PC nr for x-axis}
+\item{pc_x}{PC nr for x-axis}
 
-\item{pca_y}{PC nr for y-axis}
+\item{pc_y}{PC nr for y-axis}
 
 \item{meta}{metadata for size and legend}
 

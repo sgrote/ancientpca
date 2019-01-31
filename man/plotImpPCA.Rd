@@ -2,9 +2,11 @@
 % Please edit documentation in R/plotImpPCA.R
 \name{plotImpPCA}
 \alias{plotImpPCA}
-\title{Plot PCAs 1-6}
+\title{Plot PCAs
+Exports combined plot to PDF file}
 \usage{
-plotImpPCA(pca_obj, original_matrix, meta_file, output_pca_pdf)
+plotImpPCA(pca_obj, original_matrix, meta_file, output_pca_pdf,
+  pc_max = 6)
 }
 \arguments{
 \item{pca_obj}{PCA object from R funtion prcomp()}
@@ -14,7 +16,10 @@ plotImpPCA(pca_obj, original_matrix, meta_file, output_pca_pdf)
 \item{meta_file}{CSV file with two columns: sample-ID and population. Might contain additional columns.}
 
 \item{output_pca_pdf}{Output file with ".pdf"}
+
+\item{pc_max}{Even integer, last PC to plot, e.g. if pc_max=4 it will plot PC1 vs PC2 and PC3 vs PC4.}
 }
 \description{
-Exports plots of PCs 1~2, 3~4, 5~6 to PDF file
+Plot PCAs
+Exports combined plot to PDF file
 }
